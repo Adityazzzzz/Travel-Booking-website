@@ -33,7 +33,7 @@ userSchema.pre('save',async function(next){
 })
 
 userSchema.methods.createJWT= async function(){
-    return jwt.sign({id:this._id, email:this.email}, process.env.JWT_SECRET, {expiresIn:process.env.JWT_LIFETIME})
+    return jwt.sign({id:this._id, email:this.email, name:this.name}, process.env.JWT_SECRET, {expiresIn:process.env.JWT_LIFETIME})
 }
 
 userSchema.methods.comparePassword =  async function (candidatepassword){

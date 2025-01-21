@@ -1,4 +1,5 @@
 const User = require('../model/model');
+const jwt= require('jsonwebtoken')
 
 const gettest = (req, res) => {
     res.send('test ok');
@@ -40,5 +41,17 @@ const postlogin = async (req, res) => {
 };
 
 
+const getprofile= (req, res) => {
+    const {token}=req.cookies;
+    if(token){
+        jwt.verify(token,process.env.JWT_SECRET,{},(err,user)=>{
+            if(err) throw err;
+            res.json(user)
+        })
+    }
+    else{
+        res.json(null)
+    } 
+}
 
-module.exports = { gettest, postregister, postlogin };
+module.exports = { gettest, postregister, postlogin, getprofile };
