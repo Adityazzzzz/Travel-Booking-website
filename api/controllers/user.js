@@ -54,4 +54,8 @@ const getprofile= (req, res) => {
     } 
 }
 
-module.exports = { gettest, postregister, postlogin, getprofile };
+const postlogout=(req,res)=>{
+    res.cookie('token','').json(true);
+}
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout };
