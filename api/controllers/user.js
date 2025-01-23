@@ -1,5 +1,8 @@
 const User = require('../model/model');
 const jwt= require('jsonwebtoken')
+const fs = require('fs');
+const path = require('path');
+const imagedownloader= require('image-downloader')
 
 const gettest = (req, res) => {
     res.send('test ok');
@@ -58,4 +61,21 @@ const postlogout=(req,res)=>{
     res.cookie('token','').json(true);
 }
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout };
+
+const postlinkphotos = async (req, res) => {
+    const { link } = req.body;
+    const uploadDir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    const newName = Date.now() + '.jpg';
+    const destPath = path.join(uploadDir, newName);
+    await imagedownloader.image({
+        url: link,
+        dest: destPath,
+    });
+    res.json({ success: true, filename: newName });
+};
+
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos };
