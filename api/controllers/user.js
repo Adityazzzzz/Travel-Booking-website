@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const imagedownloader= require('image-downloader')
 
+
 const gettest = (req, res) => {
     res.send('test ok');
 };
@@ -78,4 +79,24 @@ const postlinkphotos = async (req, res) => {
 };
 
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos };
+const postuploads =(req,res)=>{
+
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: "No files were uploaded" });
+    }
+    const uploadfiles = [];
+    req.files.forEach(file => {
+        const { path, originalname } = file;
+        const ext = originalname.split('.').pop();
+        const newPath = `${path}.${ext}`;
+
+        fs.renameSync(path, newPath);
+        uploadfiles.push(newPath.replace(/.*uploads[\\/]/, '')); 
+    });
+
+    res.json( uploadfiles );
+}
+
+
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads  };
