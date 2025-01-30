@@ -2,8 +2,8 @@ import { useContext, useState } from "react"
 import { UserContext } from "../store/user"
 import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
-
 import Places from "./Placespage";
+
 
 function Account(){
     const {ready, user, setuser} = useContext(UserContext);
