@@ -1,4 +1,5 @@
 const User = require('../model/model');
+const Place = require('../model/place')
 const jwt= require('jsonwebtoken')
 const fs = require('fs');
 const path = require('path');
@@ -99,4 +100,22 @@ const postuploads =(req,res)=>{
 
 
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads  };
+
+const postlinkplaces=(req,res)=>{
+    const {token}=req.cookies;
+    const {title, address, photos,description, perks, extraInfo, chechIn, checkOut, maxGuests}= req.body
+
+    jwt.verify(token,process.env.JWT_SECRET,{},async(err,user)=>{
+        if(err) throw err;
+        const placeDoc =await Place.create({
+            owner:user.id,
+            title, address, photos,description, perks, extraInfo, chechIn, checkOut, maxGuests
+        })
+        res.json(placeDoc)
+    })
+}
+
+
+
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces  };

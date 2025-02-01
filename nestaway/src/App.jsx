@@ -5,8 +5,9 @@ import Layout from "./layout"
 import Register from "./pages/Registerpage"
 import axios from "axios"
 import { UserContextProvider } from "./store/user"
-import Account from "./pages/Accountpage"
-
+import Profile from "./pages/Profilepage"
+import Places from "./pages/Placespage"
+import Placesformpage from "./pages/Placesformpage"
 
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
@@ -21,8 +22,10 @@ function App(){
             <Route index element={<Indexpage/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
-            <Route path='/account/:subpage?' element={<Account/>}/>
-            <Route path='/account/:subpage/:action' element={<Account/>}/>
+            <Route path='/account/profile' element={<Profile/>}/>
+            <Route path='/account/bookings' element={<Profile/>}/>
+            <Route path='/account/places' element={<Places/>}/>
+            <Route path='/account/places/new' element={<Placesformpage/>}/>
        
           </Route>
         </Routes>

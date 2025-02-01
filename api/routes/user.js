@@ -7,7 +7,8 @@ const {
     getprofile, 
     postlogout, 
     postlinkphotos, 
-    postuploads 
+    postuploads,
+    postlinkplaces
 } = require('../controllers/user')
 const multer= require('multer')
 
@@ -24,6 +25,6 @@ router.post('/logout',postlogout)
 
 router.post('/upload-by-link',postlinkphotos)
 router.post('/uploads',photosmiddleware.array('photos',100),postuploads)
-
+router.post('/places',postlinkplaces)
 
 module.exports=router;
