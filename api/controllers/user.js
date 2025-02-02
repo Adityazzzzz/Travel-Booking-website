@@ -1,9 +1,9 @@
-const User = require('../model/model');
+const User = require('../model/user');
 const Place = require('../model/place')
-const jwt= require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const fs = require('fs');
 const path = require('path');
-const imagedownloader= require('image-downloader')
+const imagedownloader = require('image-downloader')
 
 
 const gettest = (req, res) => {
@@ -19,48 +19,48 @@ const postregister = async (req, res) => {
             email,
             password
         });
-        res.status(200).json(userDoc); 
-    } 
+        res.status(200).json(userDoc);
+    }
     catch (error) {
         res.status(422).json({ message: "User registration failed", error: error.message });
-    } 
+    }
 };
 
 
 
 const postlogin = async (req, res) => {
-    const {email,password}=req.body;
+    const { email, password } = req.body;
     try {
         const userDoc = await User.findOne({ email });
-        if (!userDoc) {return res.status(422).json({ message: 'User not found' });}
+        if (!userDoc) { return res.status(422).json({ message: 'User not found' }); }
 
         const isPasswordCorrect = await userDoc.comparePassword(password);
-        if (!isPasswordCorrect) {return res.status(422).json({ message: 'Invalid password' });}
+        if (!isPasswordCorrect) { return res.status(422).json({ message: 'Invalid password' }); }
 
-        const token =await userDoc.createJWT();
-        res.cookie('token',token).json({user:{_id:userDoc._id, name:userDoc.name, email:userDoc.email}});
-    } 
+        const token = await userDoc.createJWT();
+        res.cookie('token', token).json({ user: { _id: userDoc._id, name: userDoc.name, email: userDoc.email } });
+    }
     catch (error) {
         res.status(500).json({ message: "Login failed", error: error.message });
     }
 };
 
 
-const getprofile= (req, res) => {
-    const {token}=req.cookies;
-    if(token){
-        jwt.verify(token,process.env.JWT_SECRET,{},(err,user)=>{
-            if(err) throw err;
+const getprofile = (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+            if (err) throw err;
             res.json(user)
         })
     }
-    else{
+    else {
         res.json(null)
-    } 
+    }
 }
 
-const postlogout=(req,res)=>{
-    res.cookie('token','').json(true);
+const postlogout = (req, res) => {
+    res.cookie('token', '').json(true);
 }
 
 
@@ -80,7 +80,7 @@ const postlinkphotos = async (req, res) => {
 };
 
 
-const postuploads =(req,res)=>{
+const postuploads = (req, res) => {
 
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: "No files were uploaded" });
@@ -92,30 +92,60 @@ const postuploads =(req,res)=>{
         const newPath = `${path}.${ext}`;
 
         fs.renameSync(path, newPath);
-        uploadfiles.push(newPath.replace(/.*uploads[\\/]/, '')); 
+        uploadfiles.push(newPath.replace(/.*uploads[\\/]/, ''));
     });
 
-    res.json( uploadfiles );
+    res.json(uploadfiles);
 }
 
 
+const postlinkplaces = (req, res) => {
+    const { token } = req.cookies;
+    const { title, address, addedPhotos, perks, description, extraInfo, checkIn, checkOut, maxGuests } = req.body
 
-
-const postlinkplaces=(req,res)=>{
-    const {token}=req.cookies;
-    const {title, address, photos,description, perks, extraInfo, chechIn, checkOut, maxGuests}= req.body
-
-    jwt.verify(token,process.env.JWT_SECRET,{},async(err,user)=>{
-        if(err) throw err;
-        const placeDoc =await Place.create({
-            owner:user.id,
-            title, address, photos,description, perks, extraInfo, chechIn, checkOut, maxGuests
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, user) => {
+        if (err) throw err;
+        const placeDoc = await Place.create({
+            owner: user.id,
+            title, address, photos: addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
         })
         res.json(placeDoc)
     })
 }
 
 
+const getplaceslist = (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, user) => {
+        const { id } = user
+        res.json(await Place.find({ owner: id }))
+    })
+}
 
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces  };
+const getplacebyid = async (req, res) => {
+    const { id } = req.params
+    res.json(await Place.findById(id))
+}
+
+
+const putplacebyid = async (req, res) => {
+    const { token } = req.cookies;
+    const {
+        id, title, address, addedPhotos, description,
+        perks, extraInfo, checkIn, checkOut, maxGuests, price,
+    } = req.body;
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
+        if (err) throw err;
+        const placeDoc = await Place.findById(id);
+        if (userData.id === placeDoc.owner.toString()) {
+            placeDoc.set({
+                title, address, photos: addedPhotos, description,
+                perks, extraInfo, checkIn, checkOut, maxGuests, price,
+            });
+            await placeDoc.save();
+            res.json('ok');
+        }
+    });
+};
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid };
