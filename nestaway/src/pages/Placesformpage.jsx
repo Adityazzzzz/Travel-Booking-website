@@ -58,9 +58,6 @@ function Placesformpage(){
     async function saveplace(e){
         e.preventDefault();
         const placedata={title,address, addedPhotos,perks,description,extraInfo,checkIn,checkOut,maxGuests}
-     
-     
-     
         if(id){
             //update
             await axios.put('/places', {

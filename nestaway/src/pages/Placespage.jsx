@@ -22,12 +22,12 @@ function Places(){
                     Add new places
                 </Link>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 max-w-7xl mx-auto">
                 {places.length>0 && places.map(place=>(
                     <Link to={'/account/places/' + place._id } key={place._id} className="flex cursor-pointer gap-4 m-4 bg-gray-100 p-2 rounded-2xl">
-                        <div className="w-32 h-32 ml-4 mt-2 mb-2 bg-gray-300 shrink-0">
+                        <div className="flex w-32 h-32 ml-4 mt-2 mb-2 bg-gray-300 shrink-0">
                             {place.photos.length>0 && (
-                                <img src={place.photos[0]} alt=""/>
+                                <img className="object-cover" src={'http://localhost:5000/uploads/' +place.photos[0]} alt=""/>
                             )}
                         </div>
                         <div>
