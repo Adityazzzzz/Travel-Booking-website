@@ -6,7 +6,7 @@ import axios from "axios";
 function Places(){
     const [places,setplaces]=useState([]);
     useEffect(()=>{
-        axios.get('/places').then(({data})=>{
+        axios.get('/user-places').then(({data})=>{
             setplaces(data);
         });
     },[]);

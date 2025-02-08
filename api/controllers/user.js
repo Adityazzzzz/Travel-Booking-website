@@ -101,13 +101,13 @@ const postuploads = (req, res) => {
 
 const postlinkplaces = (req, res) => {
     const { token } = req.cookies;
-    const { title, address, addedPhotos, perks, description, extraInfo, checkIn, checkOut, maxGuests } = req.body
+    const { title, address, addedPhotos, perks, description, extraInfo, checkIn, checkOut, maxGuests, price } = req.body
 
     jwt.verify(token, process.env.JWT_SECRET, {}, async (err, user) => {
         if (err) throw err;
         const placeDoc = await Place.create({
             owner: user.id,
-            title, address, photos: addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
+            title, address, photos: addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price
         })
         res.json(placeDoc)
     })
@@ -148,4 +148,10 @@ const putplacebyid = async (req, res) => {
         }
     });
 };
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid };
+
+
+const gethomepageplaces=async(req,res)=>{
+    res.send(await Place.find())
+}
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces };

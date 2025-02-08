@@ -11,18 +11,20 @@ const {
     postlinkplaces,
     getplaceslist,
     getplacebyid,
-    putplacebyid
+    putplacebyid,
+    gethomepageplaces
 } = require('../controllers/user')
-const multer= require('multer')
 
+const multer= require('multer')
 
 const photosmiddleware= multer({dest:'controllers/uploads/'})
 
 
 router.get('/test',gettest)
 router.get('/profile',getprofile)
-router.get('/places',getplaceslist)
+router.get('/user-places',getplaceslist)
 router.get('/places/:id',getplacebyid)
+router.get('/places',gethomepageplaces)
 
 router.put('/places',putplacebyid)
 
