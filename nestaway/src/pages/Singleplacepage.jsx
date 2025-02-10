@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import BookingWidget from "../components/Bookingwidget";
 
 function SinglePlace(){
     const {id} = useParams();
@@ -40,7 +41,7 @@ function SinglePlace(){
 
     return <>
         <div className="mt-6 bg-gray-100 rounded-3xl px-8 py-8 max-w-5xl mx-auto shadow-lg shadow-gray-400">
-            <h1 className="text-2xl">{place.title}</h1>
+            <h1 className="text-3xl ">{place.title}</h1>
             <a className="flex gap-1 my-2 mb-4 font-semibold underline" target="_blank" href={'https://maps.google.com/?q='+place.address}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                     <path fillRule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clipRule="evenodd" />
@@ -48,21 +49,21 @@ function SinglePlace(){
                 {place.address}
             </a>
             <div className="relative">
-                <div className="grid gap-2 grid-cols-[2fr_1fr]">
+                <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-xl overflow-hidden">
                     <div>
                         {place.photos?.[0] && (
                             <div>
-                                <img className="aspect-square object-cover" src={"http://localhost:5000/uploads/"+place.photos[0] } alt=""/>
+                                <img onClick={()=>setshowallphotos(true)} className="aspect-square object-cover" src={"http://localhost:5000/uploads/"+place.photos[0] } alt=""/>
                             </div>
                         )}
                     </div>
                     <div className="grid">
                         {place.photos?.[1] && (
-                            <img className="aspect-square object-cover" src={"http://localhost:5000/uploads/"+place.photos[1] } alt=""/>
+                            <img onClick={()=>setshowallphotos(true)} className="aspect-square object-cover" src={"http://localhost:5000/uploads/"+place.photos[1] } alt=""/>
                         )}
                         <div className=" overflow-hidden">
                             {place.photos?.[2] && (
-                                <img className="aspect-square object-cover relative top-2" src={"http://localhost:5000/uploads/"+place.photos[2] } alt=""/>
+                                <img onClick={()=>setshowallphotos(true)} className="aspect-square object-cover relative top-2" src={"http://localhost:5000/uploads/"+place.photos[2] } alt=""/>
                             )}
                         </div>
                     </div>
@@ -73,6 +74,28 @@ function SinglePlace(){
                     </svg>
                     Show more photos
                 </button>
+            </div>
+            
+            <div className="mt-4 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
+                <div>
+                    <div className="my-4">
+                        <h2 className="font-semibold text-2xl mt-4 mb-2 ">Description</h2>
+                        {place.description}
+                    </div>
+                    <b className="font-semibold">
+                    Check-In: {place.checkIn}<br/>
+                    Check-Out: {place.checkOut} <br/>
+                    Max number of guests: {place.maxGuests}
+                    </b>
+                    
+                </div>
+                <div>
+                    <BookingWidget place={place}/>
+                </div>
+            </div>
+            <div className="mt-3 text-sm text-gray-700 leading-4">
+                <h3 className="font-semibold text-lg mt-4 mb-2 ">ExtraInfo</h3>
+                {place.extraInfo}
             </div>
         </div>
     </>
