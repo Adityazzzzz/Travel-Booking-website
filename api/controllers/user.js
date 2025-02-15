@@ -183,7 +183,8 @@ const postbookings = async(req, res) => {
 
 const getbookings=async(req,res)=>{
     const userData= await getUserDatafromtoken(req);
-    res.json(await Book.find({user: userData.id})).populate('place')
+    const bookings = await Book.find({ user: userData.id }).populate('place');
+    res.json(bookings);
 }
 
 
