@@ -1,9 +1,20 @@
 const User = require('../model/user');
 const Place = require('../model/place')
+const Book = require('../model/booking')
 const jwt = require('jsonwebtoken')
 const fs = require('fs');
 const path = require('path');
 const imagedownloader = require('image-downloader')
+
+
+function getUserDatafromtoken(req){
+    return new Promise ((resolve,reject)=>{
+        jwt.verify(req.cookies.token, process.env.JWT_SECRET, {}, async (err, userData) => {
+            if(err) throw err;
+            resolve(userData)
+        })
+    })
+}
 
 
 const gettest = (req, res) => {
@@ -154,4 +165,28 @@ const gethomepageplaces=async(req,res)=>{
     res.send(await Place.find())
 }
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces };
+
+const postbookings = async(req, res) => {
+    const userData= await getUserDatafromtoken(req);
+    const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
+
+    Book.create({ place, checkIn, checkOut, numberOfGuests, name, phone, price, user: userData.id })
+        .then((doc) => {
+            res.json(doc); 
+        })
+        .catch((err) => {
+            console.error("Error creating booking:", err);
+            res.status(500).json({ error: "Failed to create booking" });
+        });
+};
+
+
+const getbookings=async(req,res)=>{
+    const userData= await getUserDatafromtoken(req);
+    res.json(await Book.find({user: userData.id})).populate('place')
+}
+
+
+
+
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces, postbookings, getbookings };
