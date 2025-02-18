@@ -13,6 +13,8 @@ export default function Header(){
         <span className='font-bold text-2xl'>Nestaway</span>
       </Link>
 
+
+
       <div className="flex gap-4 m-5 border border-gray-300 rounded-full py-2 px-5 shadow-md shadow-gray-300">
         <div className="mt-1">Anywhere</div>
         <div className="border-l-2 border-gray-300"></div>
@@ -24,6 +26,8 @@ export default function Header(){
           </svg>
         </button>
       </div>
+
+
 
       <Link to={user? '/account/profile':'/login'} className="flex  gap-4 m-4 border border-gray-300 rounded-full py-3 px-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7 mt-1">
