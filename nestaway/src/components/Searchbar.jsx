@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
+
 const SearchBar = () => {
   const [search, setSearch] = useState(false);
   const [location, setLocation] = useState("");

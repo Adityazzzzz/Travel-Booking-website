@@ -44,6 +44,15 @@ function SinglePlace(){
                     <BookingWidget place={place}/>
                 </div>
             </div>
+            <div className="mt-3 text-lg text-gray-700 leading-4">
+                <h3 className="font-semibold text-lg mt-4 mb-2">Perks</h3>
+                <ul className="list-disc pl-5 text-lg">
+                    {place.perks.map((perk, index) => (
+                        <li className="mt-0" key={index}>{perk}</li>
+                    ))}
+                </ul>
+            </div>
+
             <div className="mt-3 text-sm text-gray-700 leading-4">
                 <h3 className="font-semibold text-lg mt-4 mb-2 ">ExtraInfo</h3>
                 {place.extraInfo}
