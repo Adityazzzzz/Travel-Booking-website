@@ -27,7 +27,6 @@ function Indexpages() {
     );
   });
 
-  
   return (
     <div>
       {/* Search Bar */}
