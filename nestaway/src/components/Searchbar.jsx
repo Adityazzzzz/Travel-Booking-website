@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 const SearchBar = () => {
   const [search, setSearch] = useState(false);
