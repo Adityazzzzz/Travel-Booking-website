@@ -4,8 +4,8 @@ import { UserContext } from "../store/user"
 import Searchbar from "./Searchbar"
 import { Cover } from "../components/ui/cover";
 import { DialogDemo } from "./dialogcomp";
-
-
+import ModeToggle from "./mode-toggle.jsx"
+ 
 export default function Header(){
   const {user}= useContext(UserContext)
 
@@ -21,8 +21,11 @@ export default function Header(){
 
       <Searchbar/>
       
-      <div className="absolute left-3/4 top-3 transform translate-y-1/2 z-10">
+      <div className="flex absolute left-3/4 top-3 gap-3 transform translate-y-1/2 z-10">
         <DialogDemo />
+        <div>  
+          <ModeToggle/>
+        </div>
       </div>
 
       <Link to={user? '/account/profile':'/login'} className="flex  gap-4 m-4 border border-gray-300 rounded-full py-3 px-5">
