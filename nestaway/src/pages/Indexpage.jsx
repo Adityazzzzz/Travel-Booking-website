@@ -16,6 +16,8 @@ function Indexpages() {
     });
   }, []);
 
+  
+
 
   const filteredPlaces = homeplace.filter((place) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
@@ -31,7 +33,7 @@ function Indexpages() {
     <div>
       {/* Search Bar */}
       <Searching setfilter={setfilter} setSearchTerm={setSearchTerm}/>
-
+      
       {/* Filter Modal */}
       {filter && (
         <Filter priceRange={priceRange} setfilter= {setfilter} setPriceRange={setPriceRange}/>

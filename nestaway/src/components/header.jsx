@@ -1,16 +1,19 @@
-import { useContext} from "react"
+import { useContext, useEffect, useState} from "react"
 import { Link } from "react-router-dom"
 import { UserContext } from "../store/user"
 import Searchbar from "./Searchbar"
 import { Cover } from "../components/ui/cover";
-import { DialogDemo } from "./dialogcomp";
-import ModeToggle from "./mode-toggle.jsx"
+import { SheetDemo } from "./sidesheet";
  
 export default function Header(){
   const {user}= useContext(UserContext)
+  const [sidesheet,setSheet] = useState(false)
+
+  
 
   return(
     <header className="ml-8 flex justify-between">
+      
       <Link to={'/'} href="" className="flex items-center gap-2 p-2">
         <Cover className="flex">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12 -rotate-90 "><path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
@@ -20,13 +23,11 @@ export default function Header(){
       </Link>
 
       <Searchbar/>
-      
-      <div className="flex absolute left-3/4 top-3 gap-3 transform translate-y-1/2 z-10">
-        <DialogDemo />
-        <div>  
-          <ModeToggle/>
-        </div>
+      <div className="flex absolute right-1/4  top-3 gap-3 transform translate-y-1/2 z-10 ">
+        <SheetDemo/>
       </div>
+
+      
 
       <Link to={user? '/account/profile':'/login'} className="flex  gap-4 m-4 border border-gray-300 rounded-full py-3 px-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7 mt-1">
@@ -41,6 +42,10 @@ export default function Header(){
 
         {!!user && <div className='mt-1 font-bold'>{user.name}</div>}
       </Link>
+
+
+
+
           
     </header>
   )

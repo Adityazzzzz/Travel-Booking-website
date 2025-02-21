@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import AddressLink from "../components/AddressLink";
@@ -34,10 +34,10 @@ function SingleBookingPage(){
               <h2 className="text-xl mb-4">Your booking information:</h2>
               <BookingDates booking={booking} />
             </div>
-            <div className="bg-primary p-6 text-white rounded-2xl">
+            <Link to={"/payment"} className="bg-primary p-6 text-white rounded-2xl">
               <div>Total price</div>
               <div className="text-2xl">{booking.price} Rs.</div>
-            </div>
+            </Link>
           </div>
           <PlaceGallery place={booking.place} />
         </div>
