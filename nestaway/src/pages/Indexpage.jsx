@@ -18,6 +18,8 @@ function Indexpages() {
 
   
 
+  
+
 
   const filteredPlaces = homeplace.filter((place) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
@@ -29,8 +31,10 @@ function Indexpages() {
     );
   });
 
+
   return (
     <div>
+      
       {/* Search Bar */}
       <Searching setfilter={setfilter} setSearchTerm={setSearchTerm}/>
       

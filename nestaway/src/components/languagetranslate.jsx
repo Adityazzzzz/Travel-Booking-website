@@ -22,5 +22,5 @@ export function GoogleTranslate() {
   }, []);
  
 
-  return <div id="google_translate_element" className="translate-box" />;
+  return <div id="google_translate_element" className="translate-box " />;
 }

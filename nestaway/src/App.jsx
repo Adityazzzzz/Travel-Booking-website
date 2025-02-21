@@ -11,7 +11,8 @@ import Placesformpage from "./pages/Placesformpage"
 import SinglePlace from "./pages/Singleplacepage"
 import BookingPage from "./pages/Bookingpage"
 import SingleBookingPage from "./pages/Singlebookingpage"
-
+import "regenerator-runtime/runtime";
+import "@babel/polyfill";
 
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
