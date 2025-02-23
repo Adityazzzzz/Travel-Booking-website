@@ -3,11 +3,12 @@ import { RiVoiceAiFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import useClipboard from "react-use-clipboard";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Searching({searchTerm, setSearchTerm, setfilter }) {
   const [voicebutton, setvoicebutton] = useState(false);
   const [text, setText] = useState(""); 
-  // const [textToCopy, setTextToCopy] = useState();
   const [isCopied, setCopied] = useClipboard(searchTerm, {successDuration:1000});
 
 
@@ -23,6 +24,7 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
     setText(transcript);
   }, [transcript]);
 
+
   const startListening = () => {
     SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
   };
@@ -34,7 +36,15 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
   return (
     <>
       <div className="max-w-3xl mx-auto flex gap-3 m-5 border border-gray-300 rounded-full py-2 px-5 shadow-md shadow-gray-300">
-        
+
+        <button onClick={() => { setSearchTerm("")}} className="bg-gray-400 m-2  text-black p-2 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round"d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/>
+          </svg>
+        </button>
+
+
+
         <button onClick={() => setvoicebutton(true)} className="bg-primary m-2 text-white p-3 rounded-full">
           <RiVoiceAiFill />
         </button>
@@ -45,6 +55,7 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
               
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-700">Speech to Text:</h2>
+                <h4 className="text-lg font-semibold text-blue-500">Don't forget to Tap on the Box before Copying to Searchbar</h4>
                 <button onClick={() => setvoicebutton(false)} className="text-gray-500 hover:text-red-600">
                   <FaTimes className="size-5" />
                 </button>
@@ -68,7 +79,7 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
           </div>
         )}
 
-        <input onChange={(e) => setSearchTerm(e.target.value)} type="text" placeholder="Where to?" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
+        <input onChange={(e) => setSearchTerm(e.target.value || transcript )} type="text" placeholder="Where to?" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
 
         <button onClick={() => setfilter(true)} className="bg-white flex gap-1 text-sm border h-9 w-20 mt-2 m-2 border-gray-300 rounded-lg font-semibold">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-2 ml-1">
@@ -77,6 +88,7 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
           <h6 className="mt-2 mr-2">Filter</h6>
         </button>
       </div>
+      
     </>
   );
 }

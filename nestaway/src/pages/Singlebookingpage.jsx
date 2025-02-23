@@ -26,7 +26,7 @@ function SingleBookingPage(){
 
 
     return (
-        <div className="my-8 max-w-5xl mx-auto">
+        <div className="my-8 max-w-5xl mx-auto ">
           <h1 className="text-2xl">{booking.place.title}</h1>
           <AddressLink className="my-2 block">{booking.place.address}</AddressLink>
           <div className="bg-gray-200 p-6 my-6 rounded-2xl flex items-center justify-between">
