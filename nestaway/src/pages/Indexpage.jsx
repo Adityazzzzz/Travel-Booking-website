@@ -36,7 +36,7 @@ function Indexpages() {
     <div>
       
       {/* Search Bar */}
-      <Searching setfilter={setfilter} setSearchTerm={setSearchTerm}/>
+      <Searching setfilter={setfilter} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
       
       {/* Filter Modal */}
       {filter && (
