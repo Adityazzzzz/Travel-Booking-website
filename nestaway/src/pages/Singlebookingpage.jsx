@@ -23,8 +23,6 @@ function SingleBookingPage(){
     if(!booking){
         return '';
     }
-
-
     return (
         <div className="my-8 max-w-5xl mx-auto ">
           <h1 className="text-2xl">{booking.place.title}</h1>
