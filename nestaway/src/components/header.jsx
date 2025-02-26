@@ -9,8 +9,6 @@ export default function Header(){
   const {user}= useContext(UserContext)
   const [sidesheet,setSheet] = useState(false)
 
-  
-
   return(
     <header className="ml-8 flex justify-between">
       
@@ -27,8 +25,6 @@ export default function Header(){
         <SheetDemo/>
       </div>
 
-      
-
       <Link to={user? '/account/profile':'/login'} className="flex  gap-4 m-4 border border-gray-300 rounded-full py-3 px-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7 mt-1">
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -42,11 +38,7 @@ export default function Header(){
 
         {!!user && <div className='mt-1 font-bold'>{user.name}</div>}
       </Link>
-
-
-
-
-          
+ 
     </header>
   )
 }

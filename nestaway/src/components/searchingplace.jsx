@@ -11,8 +11,6 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
   const [text, setText] = useState(""); 
   const [isCopied, setCopied] = useClipboard(searchTerm, {successDuration:1000});
 
-
-
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
 
   if (!browserSupportsSpeechRecognition) {
