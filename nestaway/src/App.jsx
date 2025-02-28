@@ -13,6 +13,7 @@ import BookingPage from "./pages/Bookingpage"
 import SingleBookingPage from "./pages/Singlebookingpage"
 import "regenerator-runtime/runtime";
 import "@babel/polyfill";
+import AIFeaturePage from "./pages/AiFeaturePage"
 
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
@@ -35,6 +36,7 @@ function App(){
           <Route path='/place/:id' element={<SinglePlace/>} />
           <Route path='/account/bookings' element={<BookingPage/>} />
           <Route path='/account/bookings/:id' element={<SingleBookingPage/>} />
+          <Route path='/aiassistant' element={<AIFeaturePage/>} />
         </Route>
       </Routes>
     </ContextProvider>
