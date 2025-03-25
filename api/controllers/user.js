@@ -188,6 +188,39 @@ const getbookings=async(req,res)=>{
 }
 
 
+const getbudget=async()=>{
+  const { destination, days, accommodation } = req.query;
+  const options = {
+    method: "GET",
+    url: "https://global-city-cost-api.p.rapidapi.com/cost%2Bof%2Bliving%2Bby%2Bcity%2Bv2",
+    params: { country: "India", city: destination },
+    headers: {
+      "x-rapidapi-key": "e9bcec3f5amsh05df4204157175ap169b36jsn7aff446cef11", 
+      "x-rapidapi-host": "global-city-cost-api.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    const data = response.data;
+    const mealCost = parseFloat(data["Meal, Inexpensive Restaurant"].replace(" €", ""));
+    const transportCost = parseFloat(data["One-way Ticket (Local Transport)"].replace(" €", ""));
+    const accommodationCost =
+      accommodation === "Budget"
+        ? parseFloat(data["Apartment (1 bedroom) Outside of Centre"].replace(" €", ""))
+        : accommodation === "Mid-Range"
+        ? parseFloat(data["Apartment (1 bedroom) in City Centre"].replace(" €", ""))
+        : parseFloat(data["Apartment (3 bedrooms) in City Centre"].replace(" €", ""));
+
+    const dailyMealCost = mealCost * 3;
+    const totalBudget = (accommodationCost * days) + (transportCost * days) + (dailyMealCost * days);
+
+    res.json({ budget: totalBudget.toFixed(2) });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Failed to fetch budget data" });
+  }
+}
 
 
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces, postbookings, getbookings };
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces, postbookings, getbookings, getbudget };

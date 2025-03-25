@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import TravelPlannerModal from "../components/Traveitinery"; 
 import { motion } from "framer-motion";
+import BudgetPlannerModal from "@/components/BudgetPlannerModal";
 
 export default function AIFeaturePage() {
   const [travelrecommend, setTravelrecommend] = useState(false);
-  const [budgetai, setBudgetai] = useState(false);
+  const [showBudgetPlanner, setShowBudgetPlanner] = useState(false);
   const [showPlanner, setShowPlanner] = useState(false);
 
   const features = [
@@ -19,7 +20,7 @@ export default function AIFeaturePage() {
     {
       title: "Budget Planner",
       description: "Take AI-assistance for building your travel budget.",
-      onClick: () => setBudgetai(true),
+      onClick: () => setShowBudgetPlanner(true),
     },
     {
       title: "Personalized Itineraries",
@@ -51,7 +52,7 @@ export default function AIFeaturePage() {
       </div>
       {showPlanner && <TravelPlannerModal onClose={() => setShowPlanner(false)} />}
       {travelrecommend && <AITravelSearchModal onClose={() => setTravelrecommend(false)} />}
-      
+      {showBudgetPlanner && <BudgetPlannerModal onClose={() => setShowBudgetPlanner(false)} />}
     </div>
   );
 }
@@ -75,22 +76,11 @@ function FeatureCard({ title, description, onClick }) {
 function AITravelSearchModal({ onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="relative w-full max-w-5xl bg-white bg-opacity-10 backdrop-blur-xl border border-white/20 text-white p-6 rounded-xl shadow-2xl mx-2"
+      <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} transition={{ duration: 0.3 }} className="relative w-full max-w-5xl bg-white bg-opacity-10 backdrop-blur-xl border border-white/20 text-white p-6 rounded-xl shadow-2xl mx-2"
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-300 hover:text-white text-2xl"
-        >
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-300 hover:text-white text-2xl">
           ✖
         </button>
-
-        {/* Embedded AI Travel Planner */}
         <iframe
           src="https://saikumar27-ai-travel-planner.hf.space"
           frameBorder="0"
