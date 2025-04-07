@@ -22,7 +22,7 @@ function Profile(){
     }
     if(tohomepage){
         return <Navigate to={tohomepage} />
-    }
+    } 
 
 
     return(
