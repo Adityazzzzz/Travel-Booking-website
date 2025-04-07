@@ -17,10 +17,6 @@ function Indexpages() {
   }, []);
 
   
-
-  
-
-
   const filteredPlaces = homeplace.filter((place) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
     return (

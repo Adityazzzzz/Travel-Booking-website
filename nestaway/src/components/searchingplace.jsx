@@ -17,11 +17,9 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
     return <p>Your browser does not support speech recognition.</p>;
   }
 
-  
   useEffect(() => {
     setText(transcript);
   }, [transcript]);
-
 
   const startListening = () => {
     SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
@@ -49,33 +47,62 @@ export default function Searching({searchTerm, setSearchTerm, setfilter }) {
 
         {voicebutton && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-3xl shadow-lg  w-9/12">
+            <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-3xl">
               
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold text-gray-700">Speech to Text:</h2>
-                <h4 className="text-lg font-semibold text-blue-500">Don't forget to Tap on the Box before Copying to Searchbar</h4>
-                <button onClick={() => setvoicebutton(false)} className="text-gray-500 hover:text-red-600">
-                  <FaTimes className="size-5" />
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-2">
+                <h2 className="text-2xl font-bold text-gray-800">Speech to Text</h2>
+                <p className="text-sm text-blue-600 font-medium">
+                  Tap the box below before copying to the search bar
+                </p>
+                <button
+                  onClick={() => setvoicebutton(false)}
+                  className="text-gray-400 hover:text-red-500 transition"
+                >
+                  <FaTimes className="w-6 h-6" />
                 </button>
               </div>
 
-
-              <div onClick={() => setSearchTerm(transcript)} className="border border-gray-500 h-60 p-2 overflow-y-auto">
-                {text} 
+              {/* Transcript Display */}
+              <div
+                onClick={() => setSearchTerm(transcript)}
+                className="border border-gray-300 rounded-xl h-60 p-4 overflow-y-auto text-gray-700 cursor-pointer hover:border-blue-400 transition"
+              >
+                {text}
               </div>
 
-
-              <div className="flex gap-2 mt-4">
-                <button onClick={setCopied} className="w-full bg-primary hover:bg-blue-500 text-white py-2 rounded-full transition duration-300">
-                  {isCopied ? 'Copied!' : 'Copy to clipboard'}
+              {/* Buttons */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                <button
+                  onClick={setCopied}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-full transition"
+                >
+                  {isCopied ? 'Copied!' : 'Copy to Clipboard'}
                 </button>
-                <button onClick={startListening} className="w-full bg-primary hover:bg-blue-500 text-white py-2 rounded-full transition duration-300">  Start Listening </button>
-                <button onClick={stopListening} className="w-full bg-primary hover:bg-blue-500 text-white py-2 rounded-full transition duration-300"> Stop Listening </button>
-                <button onClick={resetTranscript} className="w-full bg-gray-500 hover:bg-gray-700 text-white py-2 rounded-full transition duration-300">Clear</button>
+                <button
+                  onClick={startListening}
+                  className="bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 rounded-full transition"
+                >
+                  Start Listening
+                </button>
+                <button
+                  onClick={stopListening}
+                  className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 rounded-full transition"
+                >
+                  Stop Listening
+                </button>
+                <button
+                  onClick={resetTranscript}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 rounded-full transition"
+                >
+                  Clear
+                </button>
               </div>
             </div>
           </div>
         )}
+
+
 
         <input onChange={(e) => setSearchTerm(e.target.value || transcript )} type="text" placeholder="Where to?" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" />
 

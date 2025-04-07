@@ -18,9 +18,7 @@ import AIFeaturePage from "./pages/AiFeaturePage"
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
 
-
-function App(){
-  
+function App(){   
   return (
     <>
     <ContextProvider>

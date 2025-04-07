@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 
 const SearchBar = () => {
@@ -15,7 +16,7 @@ const SearchBar = () => {
 
   return (
     <div>
-      <div onClick={() => setSearch(true)} className="flex gap-4 m-5 border border-gray-300 rounded-full py-2 px-5 shadow-md shadow-gray-300">
+      <Link to={'/aiassistant'} onClick={() => setSearch(true)} className="flex gap-4 m-5 border border-gray-300 rounded-full py-2 px-5 shadow-md shadow-gray-300">
         <div className="mt-1 text-gray-700 cursor-pointer">Anywhere</div>
         <div className="border-l-2 border-gray-300 mt-1 h-6"></div>
         <div className="mt-1 text-gray-700 cursor-pointer">Any week</div>
@@ -25,9 +26,9 @@ const SearchBar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
         </button>
-      </div>
+      </Link>
 
-      {search && (
+      {/* {search && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
             <div className="bg-white p-6 rounded-3xl shadow-lg w-11/12 max-w-lg ">
                 <div className="flex justify-between items-center mb-4">
@@ -57,7 +58,7 @@ const SearchBar = () => {
                 </div>
             </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
