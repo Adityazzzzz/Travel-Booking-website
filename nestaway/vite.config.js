@@ -12,4 +12,12 @@ export default defineConfig({
   optimizeDeps: {
     include: ["regenerator-runtime"],
   },
+  server: {
+    hmr: {
+      overlay: false,
+    },
+  },
+  define: {
+    __WS_TOKEN__: JSON.stringify(null),
+  },
 })

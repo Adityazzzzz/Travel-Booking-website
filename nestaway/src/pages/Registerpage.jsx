@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 
 function Register(){
     const [name,setname]= useState('');
@@ -15,10 +16,10 @@ function Register(){
                 email,
                 password,
             })
-            alert('Registration Successful. Now you can login ')
+            toast.success('Registration Successful. Now you can login ')
         } 
         catch(error){
-            alert('Registration Failed.')
+            toast.error('Registration Failed.')
         }
     }
 

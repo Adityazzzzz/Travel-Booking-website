@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import {Link, Navigate} from 'react-router-dom'
 import axios from 'axios'
 import { UserContext} from '../store/user';
+import { toast } from 'react-toastify';
 
 function Login(){
     const [email,setemail]= useState('');
@@ -17,11 +18,11 @@ function Login(){
                 password,
             })
             setuser(data)
-            alert('User Log In Successful.')
+            toast.success('User Log In Successful.')
             setredirect(true)
         } 
         catch(error){
-            alert('Login Failed.Try again later')
+            toast.error('Login Failed.Try again later')
         }
     }
 

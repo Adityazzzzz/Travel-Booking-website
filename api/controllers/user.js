@@ -203,7 +203,7 @@ const postbudgetplanner = async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.META_SECRET_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
+          "HTTP-Referer": "http://localhost:5173",
           "X-Title": "Travel Planner",
         },
         body: JSON.stringify({
