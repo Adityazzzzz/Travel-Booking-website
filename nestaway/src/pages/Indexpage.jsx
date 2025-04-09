@@ -3,18 +3,23 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Searching from "../components/searchingplace";
 import Filter from "@/components/filtering";
+import Loader from "@/components/loader";
 
 function Indexpages() {
   const [homeplace, sethomeplace] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [filter, setfilter] = useState(false);
   const [priceRange, setPriceRange] = useState(25000); 
+  const [variant, setVariant] = useState("dots");
+  const [size, setSize] = useState("lg");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get("/places").then((response) => {
       sethomeplace(response.data);
+      setLoading(false);
     });
-    
+
   }, []);
 
   
@@ -30,42 +35,49 @@ function Indexpages() {
 
 
   return (
-    <div>
-      
-      {/* Search Bar */}
-      <Searching setfilter={setfilter} sethomeplace={sethomeplace} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-      
-      {/* Filter Modal */}
-      {filter && (
-        <Filter priceRange={priceRange} setfilter= {setfilter} setPriceRange={setPriceRange}/>
-      )}
+    <>
+      {loading ? (
+        <div className="fixed inset-0 z-50 bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50 dark:from-slate-900 dark:via-purple-900/20 dark:to-slate-900 flex justify-center items-center">
+          <Loader variant={variant} size={size} />
+        </div>
+      ) : (
+        <div>
+          {/* Search Bar */}
+          <Searching setfilter={setfilter} sethomeplace={sethomeplace} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          
+          {/* Filter Modal */}
+          {filter && (
+            <Filter priceRange={priceRange} setfilter={setfilter} setPriceRange={setPriceRange} />
+          )}
 
-      {/* Places List */}
-      <div className="mt-8 grid gap-x-6 gap-y-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {filteredPlaces.length > 0 ? (
-          filteredPlaces.map((place) => (
-            <Link to={`/place/${place._id}`} key={place._id}>
-              <div className="bg-gray-500 mb-2 rounded-2xl flex">
-                {place.photos?.[0] && (
-                  <img
-                    className="rounded-2xl object-cover aspect-square"
-                    src={`https://nestawayapi.onrender.com/uploads/${place.photos?.[0]}`}
-                    alt={place.title}
-                  />
-                )}
-              </div>
-              <h3 className="font-bold leading-4">{place.address}</h3>
-              <h3 className="text-base leading-4 mt-2 text-gray-600">{place.title}</h3>
-              <div className="mt-2 flex gap-2">
-                <span className="font-bold flex">₹{place.price}</span> per night
-              </div>
-            </Link>
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-500">No places found matching your criteria.</p>
-        )}
-      </div>
-    </div>
+          {/* Places List */}
+          <div className="mt-8 grid gap-x-6 gap-y-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filteredPlaces.length > 0 ? (
+              filteredPlaces.map((place) => (
+                <Link to={`/place/${place._id}`} key={place._id}>
+                  <div className="bg-gray-500 mb-2 rounded-2xl flex">
+                    {place.photos?.[0] && (
+                      <img
+                        className="rounded-2xl object-cover aspect-square"
+                        src={`https://nestawayapi.onrender.com/uploads/${place.photos?.[0]}`}
+                        alt={place.title}
+                      />
+                    )}
+                  </div>
+                  <h3 className="font-bold leading-4">{place.address}</h3>
+                  <h3 className="text-base leading-4 mt-2 text-gray-600">{place.title}</h3>
+                  <div className="mt-2 flex gap-2">
+                    <span className="font-bold flex">₹{place.price}</span> per night
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="text-center col-span-full text-gray-500">No places found matching your criteria.</p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
