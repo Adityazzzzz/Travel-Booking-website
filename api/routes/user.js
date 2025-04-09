@@ -15,7 +15,7 @@ const {
     gethomepageplaces,
     postbookings,
     getbookings,
-    getbudget
+    postbudgetplanner
 } = require('../controllers/user')
 
 const multer= require('multer')
@@ -29,7 +29,6 @@ router.get('/user-places',getplaceslist)
 router.get('/places/:id',getplacebyid)
 router.get('/places',gethomepageplaces)
 router.get('/bookings',getbookings)
-router.get('/budget',getbudget)
 
 router.put('/places',putplacebyid)
 
@@ -41,5 +40,6 @@ router.post('/upload-by-link',postlinkphotos)
 router.post('/uploads',photosmiddleware.array('photos',100),postuploads)
 router.post('/places',postlinkplaces)
 router.post('/bookings',postbookings)
+router.post('/budgetplanner',postbudgetplanner)
 
 module.exports=router;

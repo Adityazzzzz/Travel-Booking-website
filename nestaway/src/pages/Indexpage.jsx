@@ -8,12 +8,13 @@ function Indexpages() {
   const [homeplace, sethomeplace] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [filter, setfilter] = useState(false);
-  const [priceRange, setPriceRange] = useState(10000); 
+  const [priceRange, setPriceRange] = useState(25000); 
 
   useEffect(() => {
     axios.get("/places").then((response) => {
       sethomeplace(response.data);
     });
+    
   }, []);
 
   

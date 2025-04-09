@@ -14,6 +14,8 @@ import SingleBookingPage from "./pages/Singlebookingpage"
 import "regenerator-runtime/runtime";
 import "@babel/polyfill";
 import AIFeaturePage from "./pages/AiFeaturePage"
+import Privacy from "./pages/UserPolicy"
+import Terms from "./pages/Terms&Conditions"
 
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
@@ -35,6 +37,8 @@ function App(){
           <Route path='/account/bookings' element={<BookingPage/>} />
           <Route path='/account/bookings/:id' element={<SingleBookingPage/>} />
           <Route path='/aiassistant' element={<AIFeaturePage/>} />
+          <Route path='/privacy' element={<Privacy/>} />
+          <Route path='/terms' element={<Terms/>} />
         </Route>
       </Routes>
     </ContextProvider>

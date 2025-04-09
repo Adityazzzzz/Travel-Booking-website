@@ -47,8 +47,8 @@ function SinglePlace() {
                         {place.description}
                     </div>
                     <b className="font-semibold">
-                        Check-In: {place.checkIn}<br />
-                        Check-Out: {place.checkOut} <br />
+                        Check-In: {place.checkIn}:00 AM<br />
+                        Check-Out: {place.checkOut}:00 PM <br />
                         Max number of guests: {place.maxGuests}
                     </b>
                 </div>

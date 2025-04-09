@@ -1,51 +1,36 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import axios from 'axios';
+import axios from "axios";
 
 export default function BudgetPlannerModal({ onClose }) {
   const [destination, setDestination] = useState("");
   const [days, setDays] = useState("");
   const [accommodation, setAccommodation] = useState("Budget");
   const [budget, setBudget] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!destination || !days) {
-      alert("Please fill in both the destination and the number of days.");
+      alert("Please fill in both the destination and number of days.");
       return;
     }
 
-    const options = {
-      method: 'GET',
-      url: 'https://global-city-cost-api.p.rapidapi.com/cost%2Bof%2Bliving%2Bby%2Bcity%2Bv2',
-      params: {
-        country: 'India', 
-        city: destination, 
-      },
-      headers: {
-        'x-rapidapi-key': 'e9bcec3f5amsh05df4204157175ap169b36jsn7aff446cef11',
-        'x-rapidapi-host': 'global-city-cost-api.p.rapidapi.com',
-      }
-    };
-
+    setLoading(true);
     try {
-      const response = await axios.request(options);
-      const data = response.data;
-
-      const mealCost = parseFloat(data['Meal, Inexpensive Restaurant'].replace(' €', ''));
-      const transportCost = parseFloat(data['One-way Ticket (Local Transport)'].replace(' €', ''));
-      const accommodationCost = accommodation === "Budget" 
-        ? parseFloat(data['Apartment (1 bedroom) Outside of Centre'].replace(' €', '')) 
-        : accommodation === "Mid-Range" 
-        ? parseFloat(data['Apartment (1 bedroom) in City Centre'].replace(' €', '')) 
-        : parseFloat(data['Apartment (3 bedrooms) in City Centre'].replace(' €', ''));
-      const dailyMealCost = mealCost * 3; 
-
-      const totalBudget = (accommodationCost * days) + (transportCost * days) + (dailyMealCost * days);
-
-      setBudget(totalBudget.toFixed(2));
-    } catch (error) {
-      console.error("Error fetching data from the API:", error);
+      const response = await axios.post('/budgetplanner', {
+        destination,
+        days,
+        accommodation,
+      });
+      setBudget(response.data);
+    } 
+    catch (error) {
+      console.error("Error fetching AI estimate:", error);
+      alert("Failed to get budget estimation. Try again later.");
       setBudget(null);
+    } 
+    finally {
+      setLoading(false);
     }
   };
 
@@ -90,13 +75,19 @@ export default function BudgetPlannerModal({ onClose }) {
           onClick={handleSubmit}
           className="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white p-2 rounded"
         >
-          Estimate Budget
+          {loading ? "Estimating..." : "Estimate Budget"}
         </button>
 
         {budget && (
           <div className="mt-4 p-4 bg-gray-900 text-white rounded">
-            <h4 className="font-semibold">Estimated Budget for {days} Days:</h4>
-            <p>€{budget}</p>
+            <h4 className="font-semibold">Estimated Budget Breakdown:</h4>
+            <ul className="list-disc list-inside text-sm mt-2">
+              <li>Flight: {budget.flight} {budget.currency}</li>
+              <li>Accommodation: {budget.stay} {budget.currency}</li>
+              <li>Food: {budget.food} {budget.currency}</li>
+              <li>Activities: {budget.activities} {budget.currency}</li>
+            </ul>
+            <p className="mt-3 font-bold text-lg">Total: {budget.total} {budget.currency}</p>
           </div>
         )}
 

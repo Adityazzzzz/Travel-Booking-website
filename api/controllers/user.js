@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const imagedownloader = require('image-downloader')
 
-
 function getUserDatafromtoken(req){
     return new Promise ((resolve,reject)=>{
         jwt.verify(req.cookies.token, process.env.JWT_SECRET, {}, async (err, userData) => {
@@ -188,39 +187,68 @@ const getbookings=async(req,res)=>{
 }
 
 
-const getbudget=async()=>{
-  const { destination, days, accommodation } = req.query;
-  const options = {
-    method: "GET",
-    url: "https://global-city-cost-api.p.rapidapi.com/cost%2Bof%2Bliving%2Bby%2Bcity%2Bv2",
-    params: { country: "India", city: destination },
-    headers: {
-      "x-rapidapi-key": "e9bcec3f5amsh05df4204157175ap169b36jsn7aff446cef11", 
-      "x-rapidapi-host": "global-city-cost-api.p.rapidapi.com",
-    },
+
+
+const postbudgetplanner = async (req, res) => {
+    const { destination, days, accommodation } = req.body;
+  
+    const promptText = `Estimate a travel budget for a trip to ${destination} for ${days} days. 
+    The accommodation type is ${accommodation} class. 
+    Break down costs into flight, accommodation, food, and activities. 
+    Return result in JSON with currency.`;
+  
+    try {
+      const apiRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer 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`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:3000",
+          "X-Title": "Travel Planner",
+        },
+        body: JSON.stringify({
+          model: "meta-llama/llama-4-maverick:free",
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: promptText,
+                },
+              ],
+            },
+          ],
+        }),
+      });
+  
+      const raw = await apiRes.text(); // force raw text to debug
+      console.log("🔁 Raw OpenRouter Response:", raw);
+  
+      if (!apiRes.ok) {
+        throw new Error(`OpenRouter API failed with status ${apiRes.status}`);
+      }
+  
+      const data = JSON.parse(raw);
+      const content = data.choices?.[0]?.message?.content;
+  
+      if (!content) {
+        throw new Error("No message content from OpenRouter response");
+      }
+  
+      const jsonMatch = content.match(/{[\s\S]*}/);
+      if (!jsonMatch) {
+        throw new Error("JSON block not found in OpenRouter response");
+      }
+  
+      const budgetJson = JSON.parse(jsonMatch[0]);
+      res.status(200).json(budgetJson);
+  
+    } catch (err) {
+      console.error("🔥 BudgetPlanner Error:", err.message);
+      res.status(500).json({ error: "Failed to generate budget. " + err.message });
+    }
   };
+  
 
-  try {
-    const response = await axios.request(options);
-    const data = response.data;
-    const mealCost = parseFloat(data["Meal, Inexpensive Restaurant"].replace(" €", ""));
-    const transportCost = parseFloat(data["One-way Ticket (Local Transport)"].replace(" €", ""));
-    const accommodationCost =
-      accommodation === "Budget"
-        ? parseFloat(data["Apartment (1 bedroom) Outside of Centre"].replace(" €", ""))
-        : accommodation === "Mid-Range"
-        ? parseFloat(data["Apartment (1 bedroom) in City Centre"].replace(" €", ""))
-        : parseFloat(data["Apartment (3 bedrooms) in City Centre"].replace(" €", ""));
-
-    const dailyMealCost = mealCost * 3;
-    const totalBudget = (accommodationCost * days) + (transportCost * days) + (dailyMealCost * days);
-
-    res.json({ budget: totalBudget.toFixed(2) });
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    res.status(500).json({ error: "Failed to fetch budget data" });
-  }
-}
-
-
-module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces, postbookings, getbookings, getbudget };
+module.exports = { gettest, postregister, postlogin, getprofile, postlogout, postlinkphotos, postuploads, postlinkplaces, getplaceslist, getplacebyid, putplacebyid,gethomepageplaces, postbookings, getbookings,postbudgetplanner };

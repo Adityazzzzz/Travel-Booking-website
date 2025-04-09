@@ -20,12 +20,12 @@ function BookingPage(){
                 <AccountNav/>
                 <div >
                     {booking?.length && booking.map(booking=>(
-                        <Link to={`/account/bookings/${booking._id}`} className="flex gap-4 bg-gray-200 rounded-2xl mb-4">
+                        <Link to={`/account/bookings/${booking._id}`} className="flex gap-4 bg-gray-200 rounded-2xl mb-4"  key={booking._id}>
                             <div className="w-48 m-4">
-                                <PlaceImg place={booking.place}/>
+                                <PlaceImg place={booking.place || 'No Photos available'}/>
                             </div>
                             <div className="py-3 ">
-                                <h2 className="text-xl">{booking.place.title}</h2>
+                                <h2 className="text-xl">{booking.place?.title || 'No title available'}</h2>
                                 <div className="text-xl">
                                     <BookingDates booking={booking} className="mb-2 mt-4 text-gray-500" />
                                     <div className="flex gap-1">
