@@ -28,7 +28,7 @@ function App(){
     <>
     <ContextProvider>
       <ToastContainer
-        position="bottom-center"
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop
