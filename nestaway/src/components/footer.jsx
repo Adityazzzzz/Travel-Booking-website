@@ -18,7 +18,7 @@ const Footer = () => {
               Terms
             </Link>
             <span className="mx-2 hidden md:inline">·</span>
-            <Link to={"/company"} className="hover:underline">
+            <Link to={"/"} className="hover:underline">
               Company details
             </Link>
           </div>
