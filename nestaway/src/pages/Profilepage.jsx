@@ -45,7 +45,7 @@ function Profile(){
             <AccountNav/>
             {subpage==='profile' && (
                 <div className="text-center max-w-lg mx-auto mt-20 border border-gray-300 rounded-3xl shadow-md shadow-gray-300">
-                    <p className="mt-4">Logged in as {user1.user.name} ({user1.user.email})</p> <br/>
+                    <p className="mt-4">Logged in as {user1?.user?.name} ({user1?.user?.email})</p> <br/>
                     <button onClick={Logout} className="primary max-w-md  mb-5 ">Logout</button>
                 </div>
             )}
