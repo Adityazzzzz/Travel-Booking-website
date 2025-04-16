@@ -16,6 +16,7 @@ import "@babel/polyfill";
 import AIFeaturePage from "./pages/AiFeaturePage"
 import Privacy from "./pages/UserPolicy"
 import Terms from "./pages/Terms&Conditions"
+import { ToastContainer } from 'react-toastify';
 
 axios.defaults.baseURL='http://localhost:5000' 
 axios.defaults.withCredentials=true
@@ -24,6 +25,18 @@ function App(){
   return (
     <>
     <ContextProvider>
+      <ToastContainer 
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Indexpage/>}/>
