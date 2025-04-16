@@ -18,8 +18,8 @@ import Privacy from "./pages/UserPolicy"
 import Terms from "./pages/Terms&Conditions"
 import { ToastContainer } from 'react-toastify';
 
-axios.defaults.baseURL=import.meta.env.VITE_API_BASE_URL
 axios.defaults.withCredentials=true
+axios.defaults.baseURL = 'https://travel-booking-website-backend-e72p.onrender.com';
 
 function App(){   
   return (
