@@ -12,9 +12,13 @@ app.use(cors({
     credentials:true,
     origin:'https://nestaway-tyto.onrender.com'
 }))
-app.use('/uploads',express.static(__dirname + '/controllers/uploads'))
-app.use(cookieparser())
+app.options('*', cors({
+    origin: 'https://nestaway-tyto.onrender.com',
+    credentials: true
+}));
 app.use(express.json())
+app.use(cookieparser())
+app.use('/uploads',express.static(__dirname + '/controllers/uploads'))
 
 
 app.use(user)
