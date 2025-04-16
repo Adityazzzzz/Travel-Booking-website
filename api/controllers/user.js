@@ -203,7 +203,7 @@ const postbudgetplanner = async (req, res) => {
         headers: {
           Authorization: `Bearer api-key`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://nestaway-tyto.onrender.com/",
+          "HTTP-Referer": "https://nestaway-tyto.onrender.com",
           "X-Title": "Travel Planner",
         },
         body: JSON.stringify({
