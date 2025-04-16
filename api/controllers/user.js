@@ -201,7 +201,7 @@ const postbudgetplanner = async (req, res) => {
       const apiRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer api-key`,
           "Content-Type": "application/json",
           "HTTP-Referer": "http://localhost:3000",
           "X-Title": "Travel Planner",
