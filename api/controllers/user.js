@@ -218,6 +218,9 @@ const postbookings = async(req, res) => {
 const getbookings=async(req,res)=>{
     try {
         const userData= await getUserDatafromtoken(req);
+        if (!userData) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
         const bookings = await Book.find({ user: userData.id }).populate('place');
         res.json(bookings);
     } 
