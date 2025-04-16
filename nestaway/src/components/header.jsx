@@ -6,8 +6,19 @@ import { Cover } from "../components/ui/cover";
 import { SheetDemo } from "./sidesheet";
  
 export default function Header(){
-  const {user}= useContext(UserContext)
+  const [user, setUser] = useState(null);
   const [sidesheet,setSheet] = useState(false)
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    
+    // Listen to storage change events (logout in other tabs/windows)
+    window.addEventListener('storage', () => {
+      const updatedUser = JSON.parse(localStorage.getItem('user'));
+      setUser(updatedUser);
+    });
+  }, []);
 
   return(
     <header className="ml-8 flex justify-between">
@@ -36,7 +47,10 @@ export default function Header(){
           </svg>
         </div>
 
-        {!!user && <div className='mt-1 font-bold'>{user.name}</div>}
+        {user?.user?.name && (
+          <div className="mt-1 font-bold">{user.user.name}</div>
+        )}
+
       </Link>
  
     </header>

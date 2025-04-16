@@ -1,26 +1,37 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import { UserContext } from '@/store/user';
 
 function Register(){
     const [name,setname]= useState('');
     const [email,setemail]= useState('');
     const [password,setpassword]= useState('');
+    const [redirect, setredirect] = useState(false);
+    const {setuser} =useContext(UserContext)
 
     const registeruser=async(ev)=>{
         ev.preventDefault()
         try{
-            await axios.post('/register',{
+            const {data}=await axios.post('/register',{
                 name,
                 email,
                 password,
             })
-            toast.success('Registration Successful. Now you can login ')
+            setuser(data)
+            console.log(data.user)
+            localStorage.setItem('user', JSON.stringify(data));
+            window.dispatchEvent(new Event('storage'));
+            toast.success('Registration Successful. Now you can login ');
+            setredirect(true)
         } 
         catch(error){
             toast.error('Registration Failed.')
         }
+    }
+    if(redirect){
+        return <Navigate to={'/'}/>
     }
 
 

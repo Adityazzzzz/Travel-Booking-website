@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../store/user"
 import { Link, Navigate, useLocation} from "react-router-dom";
 import axios from "axios";
@@ -10,6 +10,17 @@ import { toast } from 'react-toastify';
 function Profile(){
     const {ready, user, setuser} = useContext(UserContext);
     const [tohomepage,settohomepage]= useState(null);
+
+    const [user1, setUser1] = useState(null);
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        setUser1(storedUser);
+        window.addEventListener('storage', () => {
+          const updatedUser = JSON.parse(localStorage.getItem('user'));
+          setUser1(updatedUser);
+        });
+    }, []);
+
     if(!ready) return 'Loading...';
     if(ready && !user && !tohomepage) return <Navigate to={'/login'}/>
 
@@ -18,6 +29,8 @@ function Profile(){
 
     async function Logout(){
         await axios.post('/logout')
+        localStorage.removeItem('user')
+        window.dispatchEvent(new Event('storage'));
         toast.success('Logout Successfull')
         settohomepage('/')
         setuser(null)
@@ -32,7 +45,7 @@ function Profile(){
             <AccountNav/>
             {subpage==='profile' && (
                 <div className="text-center max-w-lg mx-auto mt-20 border border-gray-300 rounded-3xl shadow-md shadow-gray-300">
-                    <p className="mt-4">Logged in as {user.name} ({user.email})</p> <br/>
+                    <p className="mt-4">Logged in as {user1.user.name} ({user1.user.email})</p> <br/>
                     <button onClick={Logout} className="primary max-w-md  mb-5 ">Logout</button>
                 </div>
             )}

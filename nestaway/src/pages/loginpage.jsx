@@ -17,7 +17,10 @@ function Login(){
                 email,
                 password,
             })
-            setuser(data)
+            setuser(data) 
+            console.log(data.user)
+            localStorage.setItem('user', JSON.stringify(data));
+            window.dispatchEvent(new Event('storage'));
             toast.success('User Log In Successful.')
             setredirect(true)
         } 
