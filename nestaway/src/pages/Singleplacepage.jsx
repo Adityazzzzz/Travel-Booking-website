@@ -5,7 +5,7 @@ import BookingWidget from "../components/Bookingwidget";
 import PlaceGallery from "../components/Placegallery";
 import AddressLink from "../components/AddressLink";
 import SocialIcons from "@/components/social-icons";
-
+import { toast } from 'react-toastify';
 
 
 function SinglePlace() {
@@ -30,7 +30,7 @@ function SinglePlace() {
             }).catch(err => console.log('Error sharing:', err));
         } else {
             navigator.clipboard.writeText(shareUrl);
-            alert("Link copied to clipboard!");
+            toast.info("Link copied to clipboard!");
         }
     };
 

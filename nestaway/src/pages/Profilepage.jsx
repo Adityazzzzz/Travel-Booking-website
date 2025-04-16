@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation} from "react-router-dom";
 import axios from "axios";
 import Places from "./Placespage";
 import AccountNav from "../components/AccountNav";
+import { toast } from 'react-toastify';
 
 
 function Profile(){
@@ -17,6 +18,7 @@ function Profile(){
 
     async function Logout(){
         await axios.post('/logout')
+        toast.success('Logout Successfull')
         settohomepage('/')
         setuser(null)
     }

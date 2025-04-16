@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 export default function BudgetPlannerModal({ onClose }) {
   const [destination, setDestination] = useState("");
@@ -11,7 +12,7 @@ export default function BudgetPlannerModal({ onClose }) {
 
   const handleSubmit = async () => {
     if (!destination || !days) {
-      alert("Please fill in both the destination and number of days.");
+      toast.info("Please fill in both the destination and number of days.");
       return;
     }
 
@@ -26,7 +27,7 @@ export default function BudgetPlannerModal({ onClose }) {
     } 
     catch (error) {
       console.error("Error fetching AI estimate:", error);
-      alert("Failed to get budget estimation. Try again later.");
+      toast.error("Failed to get budget estimation. Try again later.");
       setBudget(null);
     } 
     finally {
