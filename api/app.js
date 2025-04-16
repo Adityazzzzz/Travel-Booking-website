@@ -1,6 +1,6 @@
 const express = require('express')
-const app= express();
 const cors= require('cors')
+const app= express();
 const cookieparser= require('cookie-parser')
 require('dotenv').config()
 
@@ -9,12 +9,12 @@ const user=require('./routes/user');
 
 
 app.use(cors({
-    credentials:true,
-    origin:'https://nestaway-tyto.onrender.com'
-}))
+    credentials: true,
+    origin: ['http://localhost:5173', 'https://nestaway-tyto.onrender.com/'] 
+  }));
 app.options('*', cors({
-    origin: 'https://nestaway-tyto.onrender.com',
-    credentials: true
+    credentials: true,
+    origin: ['http://localhost:5173', 'https://nestaway-tyto.onrender.com/'] 
 }));
 app.use(express.json())
 app.use(cookieparser())
