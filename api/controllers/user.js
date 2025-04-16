@@ -7,12 +7,15 @@ const path = require('path');
 const imagedownloader = require('image-downloader')
 
 function getUserDatafromtoken(req){
-    return new Promise ((resolve,reject)=>{
-        jwt.verify(req.cookies?.token, process.env.JWT_SECRET, {}, async (err, userData) => {
-            if(err) reject(err);
-            resolve(userData)
-        })
-    })
+    return new Promise((resolve, reject) => {
+        const token = req.cookies.token;
+        if (!token) return resolve(null);
+
+        jwt.verify(token, process.env.JWT_SECRET, {}, (err, userData) => {
+            if (err) return reject(err);
+            resolve(userData);
+        });
+    });
 }
 
 
@@ -28,6 +31,13 @@ const postregister = async (req, res) => {
             name,
             email,
             password
+        });
+        const token = await userDoc.createJWT();
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
         });
         res.status(200).json(userDoc);
     }
@@ -48,7 +58,17 @@ const postlogin = async (req, res) => {
         if (!isPasswordCorrect) { return res.status(422).json({ message: 'Invalid password' }); }
 
         const token = await userDoc.createJWT();
-        res.cookie('token', token).json({ user: { _id: userDoc._id, name: userDoc.name, email: userDoc.email } });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        }).json({
+            user: {
+                _id: userDoc._id,
+                name: userDoc.name,
+                email: userDoc.email
+            }
+        });
     }
     catch (error) {
         res.status(500).json({ message: "Login failed", error: error.message });
@@ -139,15 +159,25 @@ const postlinkplaces = async (req, res) => {
 const getplaceslist = async (req, res) => {
     try {
         const { token } = req.cookies;
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized: No token' });
+        }
+
         jwt.verify(token, process.env.JWT_SECRET, {}, async (err, user) => {
-            const { id } = user
-            res.json(await Place.find({ owner: id }))
-        })
+            if (err) {
+                return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+            }
+
+            const { id } = user;
+            const places = await Place.find({ owner: id });
+            res.json(places);
+        });
     } 
     catch (error) {
-        res.status(500).json({ error: "Failed to get list."});  
+        res.status(500).json({ error: "Failed to get places list", details: error.message });  
     }
-}
+};
+
 
 
 const getplacebyid = async (req, res) => {
@@ -225,7 +255,7 @@ const getbookings=async(req,res)=>{
         res.json(bookings);
     } 
     catch (error) {
-        res.status(401).json({ error: err.message });
+        res.status(401).json({ error: error.message });
     }
 }
 
@@ -285,7 +315,8 @@ const postbudgetplanner = async (req, res) => {
       const budgetJson = JSON.parse(jsonMatch[0]);
       res.status(200).json(budgetJson);
   
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("🔥 BudgetPlanner Error:", err.message);
       res.status(500).json({ error: "Failed to generate budget. " + err.message });
     }
