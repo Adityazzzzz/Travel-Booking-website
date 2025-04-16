@@ -10,7 +10,7 @@ const user=require('./routes/user');
 
 app.use(cors({
     credentials:true,
-    origin:' http://localhost:5173'
+    origin:'http://localhost:5173'
 }))
 app.use('/uploads',express.static(__dirname + '/controllers/uploads'))
 app.use(cookieparser())
