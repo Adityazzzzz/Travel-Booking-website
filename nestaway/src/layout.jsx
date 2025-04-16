@@ -7,7 +7,9 @@ export default function Layout(){
         <div className="py-2 px-8  flex flex-col min-h-screen">
             <Header/>
             <hr className="mt-2 shadow-md shadow-gray-300"/>
-            <Outlet/>
+            <div className="flex-grow">
+                <Outlet />
+            </div>
             <hr className="mt-2 shadow-md shadow-gray-300"/>
             <Footer/>
         </div>
