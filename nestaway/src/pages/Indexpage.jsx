@@ -62,7 +62,7 @@ function Indexpages() {
             </Link>
           ))
         ) : (
-          <p className="text-center col-span-full text-gray-500">No places found matching your criteria.</p>
+          <p className="text-center col-span-full text-gray-500">Please Refresh until places appears.</p>
         )}
       </div>
     </div>
